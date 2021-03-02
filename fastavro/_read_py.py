@@ -103,11 +103,17 @@ def match_schemas(w_schema, r_schema):
     else:
         # Check for dicts as primitive types are just strings
         if isinstance(w_schema, dict):
-            w_type = w_schema["type"]
+            if "name" in w_schema:
+                w_type = w_schema["name"]
+            else:
+                w_type = w_schema["type"]
         else:
             w_type = w_schema
         if isinstance(r_schema, dict):
-            r_type = r_schema["type"]
+            if "name" in r_schema:
+                r_type = r_schema["name"]
+            else:
+                r_type = r_schema["type"]
         else:
             r_type = r_schema
 
