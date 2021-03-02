@@ -107,15 +107,21 @@ cpdef match_schemas(w_schema, r_schema):
             raise SchemaResolutionError(error_msg)
     else:
         # Check for dicts as primitive types are just strings
+        named_types = ("record", "enum", "fixed", "error")
         if isinstance(w_schema, dict):
-            w_type = w_schema["type"]
+            if w_schema["type"] in named_types:
+                w_type = w_schema["name"]
+            else:
+                w_type = w_schema["type"]
         else:
             w_type = w_schema
         if isinstance(r_schema, dict):
-            r_type = r_schema["type"]
+            if r_schema["type"] in named_types:
+                r_type = r_schema["name"]
+            else:
+                r_type = r_schema["type"]
         else:
             r_type = r_schema
-
         if w_type == r_type == "map":
             if match_types(w_schema["values"], r_schema["values"]):
                 return r_schema
